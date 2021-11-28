@@ -1,15 +1,15 @@
 use {
     crate::{
+        state::{TupleNumericType, SafetyDepositConfig, PREFIX},
         deprecated_state::AuctionManagerSettingsV1,
-        state::{SafetyDepositConfig, TupleNumericType, PREFIX},
+    },
+    solana_program::{
+        instruction::{AccountMeta, Instruction},
+        sysvar,
+        pubkey::Pubkey,
     },
     borsh::{BorshDeserialize, BorshSerialize},
     metaplex_token_metadata::state::EDITION_MARKER_BIT_SIZE,
-    solana_program::{
-        instruction::{AccountMeta, Instruction},
-        pubkey::Pubkey,
-        sysvar,
-    },
 };
 #[derive(BorshSerialize, BorshDeserialize, Clone)]
 pub struct SetStoreArgs {
@@ -44,14 +44,14 @@ pub struct RedeemUnusedWinningConfigItemsAsAuctioneerArgs {
 }
 
 #[derive(BorshSerialize, BorshDeserialize, Clone)]
-pub struct RedeemPrintingV2BidArgs {
-    pub edition_offset: u64,
-    pub win_index: u64,
+pub struct RedeemParticipationBidV3Args {
+    pub win_index: Option<u64>,
 }
 
 #[derive(BorshSerialize, BorshDeserialize, Clone)]
-pub struct RedeemParticipationBidV3Args {
-    pub win_index: Option<u64>,
+pub struct RedeemPrintingV2BidArgs {
+    pub edition_offset: u64,
+    pub win_index: u64,
 }
 
 #[derive(BorshSerialize, BorshDeserialize, Clone)]
