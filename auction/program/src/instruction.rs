@@ -105,7 +105,7 @@ pub fn create_auction_instruction(
         &program_id.as_ref(),
         args.resource.as_ref(),
     ];
-    let (auction_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
+    let (auc_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
 
     let seeds = &[
         PREFIX.as_bytes(),
@@ -119,7 +119,7 @@ pub fn create_auction_instruction(
         program_id,
         accounts: vec![
             AccountMeta::new(creator_pubkey, true),
-            AccountMeta::new(auction_pubkey, false),
+            AccountMeta::new(auc_pubkey, false),
             AccountMeta::new(auction_extended_pubkey, false),
             AccountMeta::new_readonly(sysvar::rent::id(), false),
             AccountMeta::new_readonly(solana_program::system_program::id(), false),
@@ -141,7 +141,7 @@ pub fn create_auction_instruction_v2(
         &program_id.as_ref(),
         args.resource.as_ref(),
     ];
-    let (auction_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
+    let (auc_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
 
     let seeds = &[
         PREFIX.as_bytes(),
@@ -155,7 +155,7 @@ pub fn create_auction_instruction_v2(
         program_id,
         accounts: vec![
             AccountMeta::new(creator_pubkey, true),
-            AccountMeta::new(auction_pubkey, false),
+            AccountMeta::new(auc_pubkey, false),
             AccountMeta::new(auction_extended_pubkey, false),
             AccountMeta::new_readonly(sysvar::rent::id(), false),
             AccountMeta::new_readonly(solana_program::system_program::id(), false),
@@ -174,11 +174,11 @@ pub fn set_authority_instruction(
     new_authority: Pubkey,
 ) -> Instruction {
     let seeds = &[PREFIX.as_bytes(), &program_id.as_ref(), resource.as_ref()];
-    let (auction_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
+    let (auc_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
     Instruction {
         program_id,
         accounts: vec![
-            AccountMeta::new(auction_pubkey, false),
+            AccountMeta::new(auc_pubkey, false),
             AccountMeta::new_readonly(authority, true),
             AccountMeta::new_readonly(new_authority, false),
         ],
@@ -198,13 +198,13 @@ pub fn start_auction_instruction(
         &program_id.as_ref(),
         args.resource.as_ref(),
     ];
-    let (auction_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
+    let (auc_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
 
     Instruction {
         program_id,
         accounts: vec![
             AccountMeta::new(authority_pubkey, true),
-            AccountMeta::new(auction_pubkey, false),
+            AccountMeta::new(auc_pubkey, false),
             AccountMeta::new_readonly(sysvar::clock::id(), false),
         ],
         data: AuctionInstruction::StartAuction(args).try_to_vec().unwrap(),
@@ -228,7 +228,7 @@ pub fn place_bid_instruction(
         program_id.as_ref(),
         args.resource.as_ref(),
     ];
-    let (auction_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
+    let (auc_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
 
     let seeds = &[
         PREFIX.as_bytes(),
@@ -242,7 +242,7 @@ pub fn place_bid_instruction(
     let seeds = &[
         PREFIX.as_bytes(),
         &program_id.as_ref(),
-        auction_pubkey.as_ref(),
+        auc_pubkey.as_ref(),
         bidder_pubkey.as_ref(),
     ];
     let (bidder_pot_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
@@ -251,7 +251,7 @@ pub fn place_bid_instruction(
     let seeds = &[
         PREFIX.as_bytes(),
         &program_id.as_ref(),
-        auction_pubkey.as_ref(),
+        auc_pubkey.as_ref(),
         bidder_pubkey.as_ref(),
         "metadata".as_bytes(),
     ];
@@ -265,7 +265,7 @@ pub fn place_bid_instruction(
             AccountMeta::new(bidder_pot_pubkey, false),
             AccountMeta::new(bidder_pot_token_pubkey, false),
             AccountMeta::new(bidder_meta_pubkey, false),
-            AccountMeta::new(auction_pubkey, false),
+            AccountMeta::new(auc_pubkey, false),
             AccountMeta::new(auction_extended_pubkey, false),
             AccountMeta::new(token_mint_pubkey, false),
             AccountMeta::new_readonly(transfer_authority, true),
@@ -294,7 +294,7 @@ pub fn cancel_bid_instruction(
         program_id.as_ref(),
         args.resource.as_ref(),
     ];
-    let (auction_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
+    let (auc_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
 
     let seeds = &[
         PREFIX.as_bytes(),
@@ -308,7 +308,7 @@ pub fn cancel_bid_instruction(
     let seeds = &[
         PREFIX.as_bytes(),
         &program_id.as_ref(),
-        auction_pubkey.as_ref(),
+        auc_pubkey.as_ref(),
         bidder_pubkey.as_ref(),
     ];
     let (bidder_pot_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
@@ -317,7 +317,7 @@ pub fn cancel_bid_instruction(
     let seeds = &[
         PREFIX.as_bytes(),
         &program_id.as_ref(),
-        auction_pubkey.as_ref(),
+        auc_pubkey.as_ref(),
         bidder_pubkey.as_ref(),
         "metadata".as_bytes(),
     ];
@@ -331,7 +331,7 @@ pub fn cancel_bid_instruction(
             AccountMeta::new(bidder_pot_pubkey, false),
             AccountMeta::new(bidder_pot_token_pubkey, false),
             AccountMeta::new(bidder_meta_pubkey, false),
-            AccountMeta::new(auction_pubkey, false),
+            AccountMeta::new(auc_pubkey, false),
             AccountMeta::new(auction_extended_pubkey, false),
             AccountMeta::new(token_mint_pubkey, false),
             AccountMeta::new_readonly(sysvar::clock::id(), false),
@@ -354,13 +354,13 @@ pub fn end_auction_instruction(
         &program_id.as_ref(),
         args.resource.as_ref(),
     ];
-    let (auction_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
+    let (auc_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
 
     Instruction {
         program_id,
         accounts: vec![
             AccountMeta::new(authority_pubkey, true),
-            AccountMeta::new(auction_pubkey, false),
+            AccountMeta::new(auc_pubkey, false),
             AccountMeta::new_readonly(sysvar::clock::id(), false),
         ],
         data: AuctionInstruction::EndAuction(args).try_to_vec().unwrap(),
@@ -383,13 +383,13 @@ pub fn claim_bid_instruction(
         &program_id.as_ref(),
         args.resource.as_ref(),
     ];
-    let (auction_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
+    let (auc_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
 
     // Derive Bidder Pot
     let seeds = &[
         PREFIX.as_bytes(),
         &program_id.as_ref(),
-        auction_pubkey.as_ref(),
+        auc_pubkey.as_ref(),
         bidder_pubkey.as_ref(),
     ];
     let (bidder_pot_pubkey, _) = Pubkey::find_program_address(seeds, &program_id);
@@ -399,7 +399,7 @@ pub fn claim_bid_instruction(
         AccountMeta::new(bidder_pot_token_pubkey, false),
         AccountMeta::new(bidder_pot_pubkey, false),
         AccountMeta::new_readonly(authority_pubkey, true),
-        AccountMeta::new_readonly(auction_pubkey, false),
+        AccountMeta::new_readonly(auc_pubkey, false),
         AccountMeta::new_readonly(bidder_pubkey, false),
         AccountMeta::new_readonly(token_mint_pubkey, false),
         AccountMeta::new_readonly(sysvar::clock::id(), false),
